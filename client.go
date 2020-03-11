@@ -33,3 +33,10 @@ type ClientConfig struct {
 	BaseURL           string
 	Token             string
 }
+
+type RPCRequest struct {
+	Method  string      `json:"method"`
+	Params  interface{} `json:"params,omitempty"`
+	ID      int         `json:"id,omitempty"`
+	JSONRPC string      `json:"jsonrpc,omitempty"`
+}
