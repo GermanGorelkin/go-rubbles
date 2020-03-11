@@ -11,7 +11,7 @@ const (
 )
 
 type Client struct {
-	http *http_client.Client
+	httpClient *http_client.Client
 }
 
 func NewClient(cfg ClientConfig) (*Client, error) {
@@ -25,7 +25,7 @@ func NewClient(cfg ClientConfig) (*Client, error) {
 		return nil, err
 	}
 
-	return &Client{http: cl}, nil
+	return &Client{httpClient: cl}, nil
 }
 
 type ClientConfig struct {
