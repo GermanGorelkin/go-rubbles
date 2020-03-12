@@ -1,6 +1,10 @@
 package go_rubbles
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"fmt"
 	"github.com/germangorelkin/http-client"
 	"net/http"
 	"time"
@@ -39,4 +43,51 @@ type RPCRequest struct {
 	Params  interface{} `json:"params,omitempty"`
 	ID      int         `json:"id,omitempty"`
 	JSONRPC string      `json:"jsonrpc,omitempty"`
+}
+
+func (cl *Client) GetPredict(ctx context.Context, products []Product) (*PredictResponse, error) {
+	r := RPCRequest{
+		Method: "predict",
+		Params: ProductsPredict{Products: products},
+	}
+
+	// create new request
+	req, err := cl.httpClient.NewRequest("POST", "", r)
+	if err != nil {
+		return nil, fmt.Errorf("error create new request:%w", err)
+	}
+
+	// send request
+	buf := new(bytes.Buffer)
+	_, err = cl.httpClient.Do(ctx, req, buf)
+	if err != nil {
+		return nil, fmt.Errorf("error send request:%w", err)
+	}
+
+	// prepare data for decoding json
+	b := buf.Bytes()
+	ReplaceAll(b, byte('\''), byte('"'))
+	/*
+		 Replace True with true
+			-> 'ready': True
+	*/
+	ReplaceAll(b, byte('T'), byte('t'))
+
+	// decode json
+	predict := new(PredictResponse)
+	err = json.NewDecoder(buf).Decode(predict)
+	if err != nil {
+		return nil, fmt.Errorf("error decode json(body):%w\n\n%s", err, string(b))
+	}
+
+	return predict, nil
+}
+
+//
+func ReplaceAll(s []byte, old, new byte) {
+	for i := 0; i < len(s); i++ {
+		if s[i] == old {
+			s[i] = new
+		}
+	}
 }
