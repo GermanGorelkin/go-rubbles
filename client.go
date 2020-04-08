@@ -40,15 +40,23 @@ type ClientConfig struct {
 
 type RPCRequest struct {
 	Method  string      `json:"method"`
-	Params  interface{} `json:"params,omitempty"`
-	ID      int         `json:"id,omitempty"`
-	JSONRPC string      `json:"jsonrpc,omitempty"`
+	Params  interface{} `json:"params"`
+	ID      string      `json:"id"`
+	JSONRPC string      `json:"jsonrpc"`
+}
+
+type RPCError struct {
+	Code    int         `json:"code"`
+	Data    interface{} `json:"data"`
+	Message string      `json:"message"`
 }
 
 func (cl *Client) GetPredict(ctx context.Context, products []Product) (*PredictResponse, error) {
 	r := RPCRequest{
-		Method: "predict",
-		Params: ProductsPredict{Products: products},
+		Method:  "predict",
+		Params:  ProductsPredict{Products: products},
+		ID:      "",
+		JSONRPC: "2.0",
 	}
 
 	// create new request
@@ -64,30 +72,12 @@ func (cl *Client) GetPredict(ctx context.Context, products []Product) (*PredictR
 		return nil, fmt.Errorf("error send request:%w", err)
 	}
 
-	// prepare data for decoding json
-	b := buf.Bytes()
-	ReplaceAll(b, byte('\''), byte('"'))
-	/*
-		 Replace True with true
-			-> 'ready': True
-	*/
-	ReplaceAll(b, byte('T'), byte('t'))
-
 	// decode json
 	predict := new(PredictResponse)
 	err = json.NewDecoder(buf).Decode(predict)
 	if err != nil {
-		return nil, fmt.Errorf("error decode json(body):%w\n\n%s", err, string(b))
+		return nil, fmt.Errorf("error decode json(body):%w\n\n%s", err, buf.String())
 	}
 
 	return predict, nil
-}
-
-//
-func ReplaceAll(s []byte, old, new byte) {
-	for i := 0; i < len(s); i++ {
-		if s[i] == old {
-			s[i] = new
-		}
-	}
 }

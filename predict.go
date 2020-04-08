@@ -34,12 +34,13 @@ type PredictResult struct {
 }
 
 type PredictResponse struct {
-	Result PredictResults
-	Id     string
+	Result *ProductsPredict `json:"result,omitempty"`
+	Error  *RPCError        `json:"error,omitempty"`
+	Id     string           `json:"id"`
 }
 
-type PredictResults struct {
-	Output   ProductsPredict `json:"output"`
-	Ready    bool            `json:"ready"`
-	ErrorMsg string          `json:"error_msg"`
-}
+//type PredictResults struct {
+//	Output   ProductsPredict `json:"output"`
+//	Ready    bool            `json:"ready"`
+//	ErrorMsg string          `json:"error_msg"`
+//}
