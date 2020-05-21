@@ -13,6 +13,7 @@ type Product struct {
 
 type ProductParameters struct {
 	Client      string `json:"client"`
+	ClientID    string `json:"client_id"`
 	Type        string `json:"type"`
 	Price       string `json:"price"`
 	DiscountPpd string `json:"discount_ppd"`
