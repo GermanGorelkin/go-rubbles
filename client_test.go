@@ -16,6 +16,7 @@ import (
 var (
 	responsePredictSuccessful []byte
 	responsePredictError      []byte
+	requestPredictSuccessful  []byte
 )
 
 func TestMain(m *testing.M) {
@@ -25,6 +26,10 @@ func TestMain(m *testing.M) {
 		log.Fatal(err)
 	}
 	responsePredictError, err = ioutil.ReadFile("testdata/resp_predict_error")
+	if err != nil {
+		log.Fatal(err)
+	}
+	requestPredictSuccessful, err = ioutil.ReadFile("testdata/req_predict_successful")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,6 +44,9 @@ func TestGetPredict_Successful(t *testing.T) {
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodPost, r.Method)
+		body, _ := ioutil.ReadAll(r.Body)
+
+		assert.Equal(t, requestPredictSuccessful, body)
 
 		_, err = w.Write(responsePredictSuccessful)
 		assert.Nil(t, err)
@@ -58,14 +66,14 @@ func TestGetPredict_Successful(t *testing.T) {
 		{
 			ProductId: "9000101411423",
 			Dates: ProductDates{
-				ShipmentDateFrom: "2020-05-26",
-				ShipmentDateTo:   "2020-06-01",
-				ShelfDateFrom:    "2020-05-01",
-				ShelfDateTo:      "2020-05-14",
+				ShipmentDateFrom: "2020-09-12",
+				ShipmentDateTo:   "2020-09-25",
+				ShelfDateFrom:    "2020-09-20",
+				ShelfDateTo:      "2020-09-25",
 			},
 			Parameters: ProductParameters{
 				Client:      "Pyaterochka",
-				ClientID:    "214",
+				ClientID:    "541",
 				ClientType:  "ka",
 				Type:        "Mega",
 				Price:       "208.83",
