@@ -14,6 +14,7 @@ type Product struct {
 type ProductParameters struct {
 	Client      string `json:"client"`
 	ClientID    string `json:"client_id"`
+	ClientType  string `json:"client_type"`
 	Type        string `json:"type"`
 	Price       string `json:"price"`
 	DiscountPpd string `json:"discount_ppd"`
@@ -39,9 +40,3 @@ type PredictResponse struct {
 	Error  *RPCError        `json:"error,omitempty"`
 	Id     string           `json:"id"`
 }
-
-//type PredictResults struct {
-//	Output   ProductsPredict `json:"output"`
-//	Ready    bool            `json:"ready"`
-//	ErrorMsg string          `json:"error_msg"`
-//}

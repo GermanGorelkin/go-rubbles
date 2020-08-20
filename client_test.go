@@ -66,6 +66,7 @@ func TestGetPredict_Successful(t *testing.T) {
 			Parameters: ProductParameters{
 				Client:      "Pyaterochka",
 				ClientID:    "214",
+				ClientType:  "ka",
 				Type:        "Mega",
 				Price:       "208.83",
 				DiscountPpd: "0.47000000",
