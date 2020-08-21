@@ -1,6 +1,6 @@
 module github.com/germangorelkin/go-rubbles
 
-go 1.14
+go 1.15
 
 require (
 	github.com/germangorelkin/http-client v0.0.2
