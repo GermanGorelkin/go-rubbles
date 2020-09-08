@@ -12,22 +12,22 @@ type Product struct {
 }
 
 type ProductParameters struct {
-	Client      string `json:"client"`
+	Client      string `json:"client,omitempty"`
 	ClientID    string `json:"client_id"`
 	ClientType  string `json:"client_type"`
-	Type        string `json:"type"`
+	Type        string `json:"type,omitempty"`
 	Price       string `json:"price"`
 	DiscountPpd string `json:"discount_ppd"`
 	DiscountOff string `json:"discount_off"`
 	DiscountOn  string `json:"discount_on"`
-	ShelfPrice  string `json:"shelf_price"`
+	ShelfPrice  string `json:"shelf_price,omitempty"`
 }
 
 type ProductDates struct {
 	ShipmentDateFrom string `json:"shipment_date_from"`
 	ShipmentDateTo   string `json:"shipment_date_to"`
-	ShelfDateFrom    string `json:"shelf_date_from"`
-	ShelfDateTo      string `json:"shelf_date_to"`
+	ShelfDateFrom    string `json:"shelf_date_from,omitempty"`
+	ShelfDateTo      string `json:"shelf_date_to,omitempty"`
 }
 
 type PredictResult struct {
